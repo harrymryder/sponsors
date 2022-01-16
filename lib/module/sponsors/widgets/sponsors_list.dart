@@ -16,6 +16,7 @@ class SponsorsList extends StatefulWidget {
 class _SponsorsListState extends State<SponsorsList> {
   final _scrollController = ScrollController();
   bool _loadMore = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,8 +36,7 @@ class _SponsorsListState extends State<SponsorsList> {
     if (_isBottom && _loadMore) {
       context.read<SponsorBloc>().add(SponsorFetched());
       _loadMore = false;
-      Future.delayed(const Duration(seconds: 1))
-          .then((value) => _loadMore = true);
+      Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
     }
   }
 
@@ -57,24 +57,40 @@ class _SponsorsListState extends State<SponsorsList> {
           if (state.sponsors.isEmpty) {
             return const Center(child: Text('No sponsors'));
           } else {
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: state.sponsors.length,
-              padding: const EdgeInsets.only(
-                top: 8,
-                right: 8,
-                left: 8,
-                bottom: 100,
-              ),
-              itemBuilder: (context, index) => BlocProvider(
-                create: (context) => SponsorCubit(),
-                child: SponsorCard(
-                  id: state.sponsors[index].id,
-                  name: state.sponsors[index].name,
-                  logo: state.sponsors[index].logo,
-                  images: state.sponsors[index].images,
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: state.sponsors.length,
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      right: 8,
+                      left: 8,
+                      bottom: 40,
+                    ),
+                    itemBuilder: (context, index) => Column(
+                      children: [
+                        BlocProvider(
+                          create: (context) => SponsorCubit(),
+                          child: SponsorCard(
+                            id: state.sponsors[index].id,
+                            name: state.sponsors[index].name,
+                            logo: state.sponsors[index].logo,
+                            images: state.sponsors[index].images,
+                          ),
+                        ),
+                        if (index == (state.sponsors.length - 1) &&
+                            state.isFetching)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             );
           }
         default:

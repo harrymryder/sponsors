@@ -7,32 +7,32 @@ class SponsorState {
     this.status = SponsorStatus.initial,
     this.sponsors = const <Sponsor>[],
     this.currentPage = 0,
-    this.hasReachedMax = false,
+    this.isFetching = false,
   });
 
   final SponsorStatus status;
   final List<Sponsor> sponsors;
   int currentPage;
-  final bool hasReachedMax;
+  bool isFetching;
 
   SponsorState copyWith({
     SponsorStatus? status,
     List<Sponsor>? sponsors,
     int? currentPage,
-    bool? hasReachedMax,
+    bool? isFetching,
   }) {
     return SponsorState(
       status: status ?? this.status,
       sponsors: sponsors ?? this.sponsors,
       currentPage: currentPage ?? this.currentPage,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      isFetching: isFetching ?? this.isFetching,
     );
   }
 
   @override
   String toString() {
-    return '''SponsorState { status: $status, 'currentPage': $currentPage, hasReachedMax: $hasReachedMax, Sponsors: ${sponsors.length} }''';
+    return '''SponsorState { status: $status, 'currentPage': $currentPage, Sponsors: ${sponsors.length}, Is fetching: $isFetching }''';
   }
 
-  List<Object> get props => [status, sponsors, hasReachedMax];
+  List<Object> get props => [status, currentPage, sponsors, isFetching];
 }

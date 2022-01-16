@@ -25,12 +25,14 @@ class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
       return;
     } else {
       try {
+        emit(state.copyWith(isFetching: true));
         final List<Sponsor> sponsors =
             await SponsorsApi.fetchSponsors(currentPage);
         emit(state.copyWith(
           status: SponsorStatus.success,
           currentPage: currentPage,
           sponsors: List.of(state.sponsors)..addAll(sponsors),
+          isFetching: false,
         ));
       } catch (_) {
         emit(state.copyWith(status: SponsorStatus.failure));
