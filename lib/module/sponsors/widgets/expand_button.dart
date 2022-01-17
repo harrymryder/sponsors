@@ -22,7 +22,6 @@ class ExpandButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          boxShadow: smallShadow,
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
