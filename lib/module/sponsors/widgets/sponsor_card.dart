@@ -52,13 +52,11 @@ class SponsorCard extends StatelessWidget {
                         )
 
                       /// Show logo as cover (if grid doesn't exist)
-                      : Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Image.network(
-                              sponsor.logo,
-                              height: 120,
-                            ),
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Image.network(
+                            sponsor.logo,
+                            height: 80,
                           ),
                         ),
                   const SizedBox(height: 10),
