@@ -1,7 +1,9 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
+import 'package:sponsors/module/sponsors/widgets/grid_big.dart';
+import 'package:sponsors/module/sponsors/widgets/grid_six_small.dart';
 
 import './product_image.dart';
 
@@ -17,137 +19,104 @@ class ProductImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width;
-    double _smallImageWidth = (_screenWidth * (1 / 3)) - 16;
-    double _bigImageWidth = (_screenWidth * (2 / 3)) - 24;
+    final List<Map> _coverGridBigImage = [];
+    final List<Map> _coverGridSmallImages = [];
+    final List<Map> _leftoverBigImages = [];
+    final List<Map> _leftoverSmallImages = [];
+    final List<Map> _leftoverImages = [];
 
-    List _firstRow = [];
-    List _firstRowSmall = [];
-    List _firstRowBig = [];
-    List _secondRow = [];
-    List _thirdRow = [];
-    List _fourthRowSmall = [];
-    List _fourthRowBig = [];
-
+    //TODO: Put in init state
+    //TODO: Get cover grid from grid generator
     for (Map image in images) {
-      if (_firstRow.length < 3) {
-        _firstRow.add(image);
+      if (_coverGridBigImage.isEmpty && image['type'] == 'BIG_SQUARE') {
+        _coverGridBigImage.add(image);
+      } else if (_coverGridSmallImages.length < 2 &&
+          image['type'] == 'SMALL_SQUARE') {
+        _coverGridSmallImages.add(image);
       } else {
-        _secondRow.add(image);
+        if (image['type'] == 'BIG_SQUARE') {
+          _leftoverBigImages.add(image);
+          _leftoverImages.add(image);
+        }
+        if (image['type'] == 'SMALL_SQUARE') {
+          _leftoverSmallImages.add(image);
+          _leftoverImages.add(image);
+        }
       }
-
-      /// Add to first row
-      // if (image['type'] == 'SMALL_SQUARE' && _firstRowSmall.length != 2) {
-      //   _firstRowSmall.add(image);
-      // } else if (image['type'] == 'BIG_SQUARE' && _firstRowBig.length != 1) {
-      //   _firstRowBig.add(image);
-      // } else {
-      //   _secondRow.add(image);
-      // }
-      //   /// Add to second row
-      // } else if (image['type'] == 'SMALL_SQUARE' && _secondRow.length < 3) {
-      //   _secondRow.add(image);
-
-      //   /// Add to third row
-      // } else if (image['type'] == 'SMALL_SQUARE' && _thirdRow.length < 3) {
-      //   _thirdRow.add(image);
-
-      //   /// Add to fourth row
-      // } else if (image['type'] == 'SMALL_SQUARE' &&
-      //     _fourthRowSmall.length != 2) {
-      //   _fourthRowSmall.add(image);
-      // } else if (image['type'] == 'BIG_SQUARE' && _fourthRowBig.length != 1) {
-      //   _fourthRowBig.add(image);
-      // }
     }
 
-    // log('First row: $_firstRow');
-    // log('Seconrd row: $_secondRow');
+    bool _noMoreGrids = false;
+
+    //TODO: Get other grids from grid generator
+    List<Widget> _grids = [];
+
+    while (!_noMoreGrids) {
+      int _smallCount = _leftoverSmallImages.length;
+      int _bigCount = _leftoverBigImages.length;
+
+      if (_smallCount >= 6) {
+        List _imagesToAdd = [];
+
+        /// Add images
+        for (var i = 0; i < 6; i++) {
+          final Map _image = _leftoverSmallImages[i];
+          _imagesToAdd.add(_image);
+        }
+
+        /// Create small image grid
+        _grids.add(GridSixSmall(images: _imagesToAdd));
+
+        /// Remove images
+        for (var i = 0; i < 6; i++) {
+          _leftoverSmallImages.removeAt(0);
+        }
+      } else if (_smallCount >= 2 && _bigCount >= 1) {
+        List<String> _sides = ['right', 'left'];
+        final _random = Random();
+        final _randomSide = _sides[_random.nextInt(2)];
+        List _imagesToAdd = [];
+
+        /// Get and remove big image
+        final Map _bigImage = _leftoverBigImages.first;
+
+        /// Get small images
+        for (var i = 0; i < 2; i++) {
+          final Map _image = _leftoverSmallImages[i];
+          _imagesToAdd.add(_image);
+        }
+
+        /// Create big image grid
+        _grids.add(GridBig(
+          smallImages: _imagesToAdd,
+          bigImage: _bigImage,
+          bigSide: _randomSide,
+        ));
+
+        /// Remove small images
+        for (var i = 0; i < 2; i++) {
+          _leftoverSmallImages.removeAt(0);
+        }
+      } else {
+        _noMoreGrids = true;
+      }
+    }
+
+    bool _hasGrids = _grids.isNotEmpty;
+
+    dev.log(_hasGrids.toString());
+    dev.log(_grids.toString());
 
     return Column(
       children: [
-        Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ProductImage(
-                  src: _firstRow[0]['smallImgUrl'],
-                  width: _smallImageWidth,
-                ),
-                ProductImage(
-                  src: _firstRow[1]['smallImgUrl'],
-                  width: _smallImageWidth,
-                ),
-              ],
-            ),
-            ProductImage(
-              src: _firstRow[2]['smallImgUrl'],
-              width: _bigImageWidth,
-            ),
-          ],
-        ),
-        if (expanded)
-          StaggeredGrid.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-            children: [
-              for (var image in _secondRow)
-                StaggeredGridTile.count(
-                  crossAxisCellCount: image['type'] == 'BIG_SQUARE' ? 2 : 1,
-                  mainAxisCellCount: image['type'] == 'BIG_SQUARE' ? 2 : 1,
-                  child: ProductImage(
-                    src: image['smallImgUrl'],
-                    width: image['type'] == 'BIG_SQUARE'
-                        ? _bigImageWidth
-                        : _smallImageWidth,
-                  ),
-                ),
-            ],
-          ),
-        // if (expanded)
-        //   Column(
-        //     children: [
-        //       Row(
-        //         children: _secondRow
-        //             .map(
-        //               (image) => ProductImage(
-        //                 src: image['smallImgUrl'],
-        //                 width: _smallImageWidth,
-        //               ),
-        //             )
-        //             .toList(),
-        //       ),
-        //       Row(
-        //         children: _thirdRow
-        //             .map(
-        //               (image) => ProductImage(
-        //                 src: image['smallImgUrl'],
-        //                 width: _smallImageWidth,
-        //               ),
-        //             )
-        //             .toList(),
-        //       ),
-        //       Row(
-        //         children: [
-        //           ProductImage(
-        //             src: _fourthRowBig.first['smallImgUrl'],
-        //             width: _bigImageWidth,
-        //           ),
-        //           Column(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: _fourthRowSmall
-        //                 .map((image) => ProductImage(
-        //                       src: image['smallImgUrl'],
-        //                       width: _smallImageWidth,
-        //                     ))
-        //                 .toList(),
-        //           ),
-        //         ],
-        //       ),
-        //     ],
-        //   ),
+        _hasGrids
+            ? GridBig(
+                smallImages: _coverGridSmallImages,
+                bigImage: _coverGridBigImage[0],
+                bigSide: 'right',
+              )
+            : Container(),
+        if (expanded && _hasGrids)
+          for (Widget grid in _grids) grid,
       ],
     );
   }

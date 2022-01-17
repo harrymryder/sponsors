@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sponsors/module/sponsors/api/sponsors_api.dart';
+
+import '../../sponsors/api/sponsors_api.dart';
 import '../models/sponsor.dart';
 
 part 'sponsor_event.dart';
