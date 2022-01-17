@@ -30,6 +30,7 @@ ThemeData themeData = ThemeData(
   primarySwatch: Colors.lightGreen,
   fontFamily: GoogleFonts.workSans().fontFamily,
   appBarTheme: AppBarTheme(
+    centerTitle: true,
     backgroundColor: Colors.white,
     titleTextStyle: GoogleFonts.workSans(
       color: Colors.grey.shade900,
