@@ -41,7 +41,7 @@ class SponsorCard extends StatelessWidget {
                 children: [
                   const SizedBox(height: 10),
 
-                  /// Show cover image grid (if exists)
+                  /// Show cover image grid if exists
                   sponsor.hasImageGrid
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -61,7 +61,7 @@ class SponsorCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   if (sponsor.coverImageGrid != null)
                     ProductImages(
                       expanded: expanded,
@@ -72,12 +72,11 @@ class SponsorCard extends StatelessWidget {
               ),
             ),
 
-            /// Only show expand button
-            /// If cover image grid exists
+            /// Only show expand button if cover image grid exists
             if (sponsor.coverImageGrid != null)
               Positioned(
-                bottom: 30,
-                right: 20,
+                bottom: 25,
+                right: 15,
                 child: ExpandButton(
                   onTap: () {
                     expanded

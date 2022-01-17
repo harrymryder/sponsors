@@ -20,7 +20,7 @@ class ExpandButton extends StatelessWidget {
         onTap();
       },
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           boxShadow: smallShadow,
           color: Colors.white,
