@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sponsors/module/sponsors/widgets/product_image.dart';
+
+import './product_image.dart';
 
 class GridBig extends StatelessWidget {
   const GridBig({

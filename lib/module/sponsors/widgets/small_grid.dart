@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sponsors/module/sponsors/widgets/product_image.dart';
+
+import './product_image.dart';
 
 class GridSixSmall extends StatelessWidget {
   const GridSixSmall({required this.images, Key? key}) : super(key: key);

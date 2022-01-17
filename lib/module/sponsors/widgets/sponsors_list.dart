@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sponsors/module/sponsors/bloc/sponsor_bloc.dart';
-import 'package:sponsors/module/sponsors/cubit/sponsor_cubit.dart';
-import 'package:sponsors/module/sponsors/widgets/sponsor_card.dart';
+
+import '../bloc/sponsor_bloc.dart';
+import '../cubit/sponsor_cubit.dart';
+import './sponsor_card.dart';
 
 class SponsorsList extends StatefulWidget {
   const SponsorsList({Key? key}) : super(key: key);
@@ -71,10 +70,7 @@ class _SponsorsListState extends State<SponsorsList> {
                   BlocProvider(
                     create: (context) => SponsorCubit(),
                     child: SponsorCard(
-                      id: state.sponsors[index].id,
-                      name: state.sponsors[index].name,
-                      logo: state.sponsors[index].logo,
-                      images: state.sponsors[index].images,
+                      sponsor: state.sponsors[index],
                     ),
                   ),
                   if (index == (state.sponsors.length - 1) && state.isFetching)

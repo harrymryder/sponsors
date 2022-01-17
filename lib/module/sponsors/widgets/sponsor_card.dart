@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sponsors/module/sponsors/cubit/sponsor_cubit.dart';
-import 'package:sponsors/module/sponsors/util/grid_generator.dart';
-import 'package:sponsors/module/sponsors/widgets/expand_button.dart';
-import 'package:sponsors/module/sponsors/widgets/product_images.dart';
+
+import '../models/sponsor.dart';
+import '../cubit/sponsor_cubit.dart';
+import './expand_button.dart';
+import './product_images.dart';
 
 class SponsorCard extends StatelessWidget {
   const SponsorCard({
-    required this.id,
-    required this.name,
-    required this.logo,
-    required this.images,
+    required this.sponsor,
     Key? key,
   }) : super(key: key);
 
-  final int id;
-  final String name;
-  final String logo;
-  final List images;
+  final Sponsor sponsor;
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Move to sponsors API?
-    final _grids = GridGenerator.generateGrid(images);
-    final _coverGrid = _grids['coverGrid'];
-    final _expandedGrids = _grids['expandedGrids'];
-    final bool _hasGrid = _coverGrid != null;
-
     return BlocBuilder<SponsorCubit, bool>(
       builder: (context, expanded) {
         return Stack(
@@ -51,34 +40,41 @@ class SponsorCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  _hasGrid
+
+                  /// Show cover image grid (if exists)
+                  sponsor.hasImageGrid
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Image.network(
-                            logo,
+                            sponsor.logo,
                             height: 40,
                           ),
                         )
+
+                      /// Show logo as cover (if grid doesn't exist)
                       : Center(
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Image.network(
-                              logo,
+                              sponsor.logo,
                               height: 120,
                             ),
                           ),
                         ),
                   const SizedBox(height: 16),
-                  if (_coverGrid != null)
+                  if (sponsor.coverImageGrid != null)
                     ProductImages(
                       expanded: expanded,
-                      coverGrid: _coverGrid,
-                      expandedGrids: _expandedGrids,
+                      coverGrid: sponsor.coverImageGrid!,
+                      expandedGrids: sponsor.expandedImageGrids ?? [],
                     ),
                 ],
               ),
             ),
-            if (_coverGrid != null)
+
+            /// Only show expand button
+            /// If cover image grid exists
+            if (sponsor.coverImageGrid != null)
               Positioned(
                 bottom: 30,
                 right: 20,

@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:sponsors/module/sponsors/widgets/grid_big.dart';
-import 'package:sponsors/module/sponsors/widgets/grid_six_small.dart';
+
+import '../widgets/big_grid.dart';
+import '../widgets/small_grid.dart';
 
 class GridGenerator {
   static Map<String, dynamic> generateGrid(List images) {
@@ -71,6 +72,7 @@ class GridGenerator {
 
         /// Get and remove big image
         final Map _bigImage = _leftoverBigImages.first;
+        _leftoverBigImages.removeAt(0);
 
         /// Get small images
         for (var i = 0; i < 2; i++) {
@@ -85,7 +87,7 @@ class GridGenerator {
           bigSide: _randomSide,
         ));
 
-        /// Remove small images
+        /// Remove small images from leftover list
         for (var i = 0; i < 2; i++) {
           _leftoverSmallImages.removeAt(0);
         }
