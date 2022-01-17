@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sponsors/shared/widgets/messages/error_message.dart';
 
 import '../bloc/sponsor_bloc.dart';
 import '../cubit/sponsor_cubit.dart';
@@ -15,7 +17,6 @@ class SponsorsList extends StatefulWidget {
 class _SponsorsListState extends State<SponsorsList> {
   final _scrollController = ScrollController();
   bool _loadMore = true;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +30,10 @@ class _SponsorsListState extends State<SponsorsList> {
       ..removeListener(_onScroll)
       ..dispose();
     super.dispose();
+  }
+
+  void _retry() {
+    context.read<SponsorBloc>().add(SponsorFetched());
   }
 
   void _onScroll() {
@@ -51,10 +56,33 @@ class _SponsorsListState extends State<SponsorsList> {
     return BlocBuilder<SponsorBloc, SponsorState>(builder: (context, state) {
       switch (state.status) {
         case SponsorStatus.failure:
-          return const Center(child: Text('Network error'));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const ErrorMessage(
+                  title: 'Network error!',
+                  subtitle: 'Please check your internet connection',
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: _retry,
+                  child: Text(
+                    'Retry',
+                    style: GoogleFonts.workSans(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         case SponsorStatus.success:
           if (state.sponsors.isEmpty) {
-            return const Center(child: Text('No sponsors'));
+            return const Center(
+                child: ErrorMessage(
+                    title: 'No sponsors!',
+                    subtitle: 'Sorry - we couldn\'t find any sponsors'));
           } else {
             return ListView.builder(
               controller: _scrollController,
