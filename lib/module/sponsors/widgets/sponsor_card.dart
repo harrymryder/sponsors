@@ -21,9 +21,11 @@ class SponsorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: Move to sponsors API?
     final _grids = GridGenerator.generateGrid(images);
     final _coverGrid = _grids['coverGrid'];
     final _expandedGrids = _grids['expandedGrids'];
+    final bool _hasGrid = _coverGrid != null;
 
     return BlocBuilder<SponsorCubit, bool>(
       builder: (context, expanded) {
@@ -49,13 +51,23 @@ class SponsorCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Image.network(
-                      logo,
-                      height: 40,
-                    ),
-                  ),
+                  _hasGrid
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Image.network(
+                            logo,
+                            height: 40,
+                          ),
+                        )
+                      : Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Image.network(
+                              logo,
+                              height: 120,
+                            ),
+                          ),
+                        ),
                   const SizedBox(height: 16),
                   if (_coverGrid != null)
                     ProductImages(
