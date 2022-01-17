@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sponsors/module/sponsors/repository/sponsors_repository.dart';
 import 'package:sponsors/module/sponsors/view/sponsors_view.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key? key, required SponsorsRepository sponsorsRepository})
+      : _sponsorsRepository = sponsorsRepository,
+        super(key: key);
+
+  final SponsorsRepository _sponsorsRepository;
 
   @override
   Widget build(BuildContext context) {

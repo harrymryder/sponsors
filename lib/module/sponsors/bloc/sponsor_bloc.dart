@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sponsors/module/sponsors/api/sponsors_api.dart';
 
 import '../repository/sponsors_repository.dart';
 import '../models/sponsor.dart';
@@ -27,7 +28,8 @@ class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
 
       /// Get sponsors from repository
       final List<Sponsor> sponsors =
-          await SponsorsRepository.getSponsors(currentPage);
+          await SponsorsRepository(sponsorsAPI: SponsorsAPI())
+              .getSponsors(currentPage);
 
       /// If no more pages, set max reached
       if (sponsors.isEmpty) {
