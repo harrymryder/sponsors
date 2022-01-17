@@ -16,29 +16,36 @@ class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
 
   Future<void> _onSponsorFetched(
       SponsorFetched event, Emitter<SponsorState> emit) async {
-    log('=================');
-    log('FETCHING SPONSORS');
     final currentPage = state.currentPage + 1;
-    log('Current page: $currentPage');
-    if (currentPage > 2) {
-      log('Not going any further...');
-      return;
-    } else {
-      try {
-        emit(state.copyWith(isFetching: true));
-        final List<Sponsor> sponsors =
-            await SponsorsApi.fetchSponsors(currentPage);
+
+    if (state.hasReachedMax) return;
+
+    try {
+      /// Show loading circle
+      emit(state.copyWith(isFetching: true));
+
+      /// Fetch sponsors from API
+      final List<Sponsor> sponsors =
+          await SponsorsApi.fetchSponsors(currentPage);
+
+      /// If no more pages, set max reached
+      if (sponsors.isEmpty) {
+        emit(state.copyWith(
+          hasReachedMax: true,
+          isFetching: false,
+        ));
+
+        /// Else, add fetched sponsors to state
+      } else {
         emit(state.copyWith(
           status: SponsorStatus.success,
           currentPage: currentPage,
           sponsors: List.of(state.sponsors)..addAll(sponsors),
           isFetching: false,
         ));
-      } catch (_) {
-        emit(state.copyWith(status: SponsorStatus.failure));
       }
+    } catch (_) {
+      emit(state.copyWith(status: SponsorStatus.failure));
     }
-    log('State current page: ${state.currentPage}');
-    log('=================');
   }
 }

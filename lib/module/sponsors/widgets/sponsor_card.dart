@@ -47,9 +47,12 @@ class SponsorCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  Image.network(
-                    logo,
-                    height: 40,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Image.network(
+                      logo,
+                      height: 40,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   ProductImages(
