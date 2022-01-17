@@ -25,33 +25,6 @@ class _SponsorsListState extends State<SponsorsList> {
   }
 
   @override
-  void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
-    super.dispose();
-  }
-
-  void _retry() {
-    context.read<SponsorsBloc>().add(SponsorsFetched());
-  }
-
-  void _onScroll() {
-    if (_isBottom && _loadMore) {
-      context.read<SponsorsBloc>().add(SponsorsFetched());
-      _loadMore = false;
-      Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
-    }
-  }
-
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<SponsorsBloc, SponsorsState>(builder: (context, state) {
       switch (state.status) {
@@ -101,6 +74,8 @@ class _SponsorsListState extends State<SponsorsList> {
                       sponsor: state.sponsors[index],
                     ),
                   ),
+
+                  /// Show loading circle when fetching new data
                   if (index == (state.sponsors.length - 1) && state.isFetching)
                     const Padding(
                       padding: EdgeInsets.only(top: 10),
@@ -114,5 +89,32 @@ class _SponsorsListState extends State<SponsorsList> {
           return const Center(child: CircularProgressIndicator());
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _retry() {
+    context.read<SponsorsBloc>().add(SponsorsFetched());
+  }
+
+  void _onScroll() {
+    if (_isBottom && _loadMore) {
+      context.read<SponsorsBloc>().add(SponsorsFetched());
+      _loadMore = false;
+      Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }
