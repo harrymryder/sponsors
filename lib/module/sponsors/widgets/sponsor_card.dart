@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sponsors/module/sponsors/cubit/sponsor_cubit.dart';
+import 'package:sponsors/module/sponsors/util/grid_generator.dart';
 import 'package:sponsors/module/sponsors/widgets/expand_button.dart';
 import 'package:sponsors/module/sponsors/widgets/product_images.dart';
 
@@ -23,6 +21,10 @@ class SponsorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _grids = GridGenerator.generateGrid(images);
+    final _coverGrid = _grids['coverGrid'];
+    final _expandedGrids = _grids['expandedGrids'];
+
     return BlocBuilder<SponsorCubit, bool>(
       builder: (context, expanded) {
         return Stack(
@@ -55,25 +57,28 @@ class SponsorCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ProductImages(
-                    expanded: expanded,
-                    images: images,
-                  ),
+                  if (_coverGrid != null)
+                    ProductImages(
+                      expanded: expanded,
+                      coverGrid: _coverGrid,
+                      expandedGrids: _expandedGrids,
+                    ),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 30,
-              right: 20,
-              child: ExpandButton(
-                onTap: () {
-                  expanded
-                      ? context.read<SponsorCubit>().collapse()
-                      : context.read<SponsorCubit>().expand();
-                },
-                expanded: expanded,
+            if (_coverGrid != null)
+              Positioned(
+                bottom: 30,
+                right: 20,
+                child: ExpandButton(
+                  onTap: () {
+                    expanded
+                        ? context.read<SponsorCubit>().collapse()
+                        : context.read<SponsorCubit>().expand();
+                  },
+                  expanded: expanded,
+                ),
               ),
-            ),
           ],
         );
       },
