@@ -2,7 +2,7 @@ part of 'sponsor_bloc.dart';
 
 enum SponsorStatus { initial, success, failure }
 
-class SponsorState {
+class SponsorState extends Equatable {
   SponsorState({
     this.status = SponsorStatus.initial,
     this.sponsors = const <Sponsor>[],
@@ -13,9 +13,9 @@ class SponsorState {
 
   final SponsorStatus status;
   final List<Sponsor> sponsors;
-  int currentPage;
-  bool isFetching;
-  bool hasReachedMax;
+  int? currentPage;
+  bool? isFetching;
+  bool? hasReachedMax;
 
   SponsorState copyWith({
     SponsorStatus? status,
@@ -38,5 +38,5 @@ class SponsorState {
     return '''SponsorState { status: $status, currentPage: $currentPage, hasReachedMax: $hasReachedMax, sponsors: ${sponsors.length}, isFetching: $isFetching }''';
   }
 
-  List<Object> get props => [status, currentPage, sponsors, isFetching];
+  List<Object> get props => [status, currentPage!, sponsors, isFetching!];
 }

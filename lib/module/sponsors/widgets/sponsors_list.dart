@@ -101,7 +101,7 @@ class _SponsorsListState extends State<SponsorsList> {
                       sponsor: state.sponsors[index],
                     ),
                   ),
-                  if (index == (state.sponsors.length - 1) && state.isFetching)
+                  if (index == (state.sponsors.length - 1) && state.isFetching!)
                     const Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Center(child: CircularProgressIndicator()),

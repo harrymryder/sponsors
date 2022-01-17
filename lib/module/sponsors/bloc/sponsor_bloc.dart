@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sponsors/module/sponsors/api/sponsors_api.dart';
 
@@ -18,9 +17,9 @@ class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
 
   Future<void> _onSponsorFetched(
       SponsorFetched event, Emitter<SponsorState> emit) async {
-    final currentPage = state.currentPage + 1;
+    final currentPage = state.currentPage! + 1;
 
-    if (state.hasReachedMax) return;
+    if (state.hasReachedMax!) return;
 
     try {
       /// Show loading circle

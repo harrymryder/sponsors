@@ -17,6 +17,7 @@ class App extends StatelessWidget {
       value: _sponsorsRepository,
       child: MaterialApp(
         title: 'Sponsors',
+        debugShowCheckedModeBanner: false,
         theme: themeData,
         home: const SponsorsView(),
       ),
