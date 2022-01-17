@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sponsors/shared/widgets/messages/error_message.dart';
 
-import '../bloc/sponsor_bloc.dart';
+import '../bloc/sponsors_bloc.dart';
 import '../cubit/sponsor_cubit.dart';
 import './sponsor_card.dart';
 
@@ -33,12 +33,12 @@ class _SponsorsListState extends State<SponsorsList> {
   }
 
   void _retry() {
-    context.read<SponsorBloc>().add(SponsorFetched());
+    context.read<SponsorsBloc>().add(SponsorsFetched());
   }
 
   void _onScroll() {
     if (_isBottom && _loadMore) {
-      context.read<SponsorBloc>().add(SponsorFetched());
+      context.read<SponsorsBloc>().add(SponsorsFetched());
       _loadMore = false;
       Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
     }
@@ -53,9 +53,9 @@ class _SponsorsListState extends State<SponsorsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SponsorBloc, SponsorState>(builder: (context, state) {
+    return BlocBuilder<SponsorsBloc, SponsorsState>(builder: (context, state) {
       switch (state.status) {
-        case SponsorStatus.failure:
+        case SponsorsStatus.failure:
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -77,7 +77,7 @@ class _SponsorsListState extends State<SponsorsList> {
               ],
             ),
           );
-        case SponsorStatus.success:
+        case SponsorsStatus.success:
           if (state.sponsors.isEmpty) {
             return const Center(
                 child: ErrorMessage(
@@ -101,7 +101,7 @@ class _SponsorsListState extends State<SponsorsList> {
                       sponsor: state.sponsors[index],
                     ),
                   ),
-                  if (index == (state.sponsors.length - 1) && state.isFetching!)
+                  if (index == (state.sponsors.length - 1) && state.isFetching)
                     const Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Center(child: CircularProgressIndicator()),

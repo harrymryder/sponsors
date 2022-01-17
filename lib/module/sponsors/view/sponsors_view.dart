@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/sponsor_bloc.dart';
+import '../bloc/sponsors_bloc.dart';
 import '../widgets/sponsors_list.dart';
 
 class SponsorsView extends StatelessWidget {
@@ -14,7 +14,7 @@ class SponsorsView extends StatelessWidget {
         title: const Text('Sponsors'),
       ),
       body: BlocProvider(
-        create: (_) => SponsorBloc()..add(SponsorFetched()),
+        create: (_) => SponsorsBloc()..add(SponsorsFetched()),
         child: const SponsorsList(),
       ),
     );

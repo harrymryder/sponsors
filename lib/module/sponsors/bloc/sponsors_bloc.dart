@@ -5,21 +5,21 @@ import 'package:sponsors/module/sponsors/api/sponsors_api.dart';
 import '../repository/sponsors_repository.dart';
 import '../models/sponsor.dart';
 
-part 'sponsor_event.dart';
-part 'sponsor_state.dart';
+part 'sponsors_event.dart';
+part 'sponsors_state.dart';
 
-class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
-  SponsorBloc() : super(SponsorState()) {
-    on<SponsorFetched>(
-      _onSponsorFetched,
+class SponsorsBloc extends Bloc<SponsorsEvent, SponsorsState> {
+  SponsorsBloc() : super(const SponsorsState()) {
+    on<SponsorsFetched>(
+      _onSponsorsFetched,
     );
   }
 
-  Future<void> _onSponsorFetched(
-      SponsorFetched event, Emitter<SponsorState> emit) async {
-    final currentPage = state.currentPage! + 1;
+  Future<void> _onSponsorsFetched(
+      SponsorsFetched event, Emitter<SponsorsState> emit) async {
+    final currentPage = state.currentPage + 1;
 
-    if (state.hasReachedMax!) return;
+    if (state.hasReachedMax) return;
 
     try {
       /// Show loading circle
@@ -40,14 +40,14 @@ class SponsorBloc extends Bloc<SponsorEvent, SponsorState> {
         /// Else, add fetched sponsors to state
       } else {
         emit(state.copyWith(
-          status: SponsorStatus.success,
+          status: SponsorsStatus.success,
           currentPage: currentPage,
           sponsors: List.of(state.sponsors)..addAll(sponsors),
           isFetching: false,
         ));
       }
     } catch (_) {
-      emit(state.copyWith(status: SponsorStatus.failure));
+      emit(state.copyWith(status: SponsorsStatus.failure));
     }
   }
 }
