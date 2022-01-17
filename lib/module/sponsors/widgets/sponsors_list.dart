@@ -16,7 +16,6 @@ class SponsorsList extends StatefulWidget {
 
 class _SponsorsListState extends State<SponsorsList> {
   final _scrollController = ScrollController();
-  bool _loadMore = true;
 
   @override
   void initState() {
@@ -104,12 +103,10 @@ class _SponsorsListState extends State<SponsorsList> {
   }
 
   void _onScroll() {
-    if (_isBottom && _loadMore) {
+    /// If already fetching new sponsors, don't run event
+    bool _alreadyFetching = context.read<SponsorsBloc>().state.isFetching;
+    if (_isBottom && !_alreadyFetching) {
       context.read<SponsorsBloc>().add(SponsorsFetched());
-
-      /// Set a timer so function ^ isn't called multiple times
-      _loadMore = false;
-      Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
     }
   }
 
