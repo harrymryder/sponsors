@@ -17,8 +17,8 @@ class BigGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double _screenWidth = MediaQuery.of(context).size.width;
-    final double _smallImageWidth = (_screenWidth * (1 / 3)) - 16;
-    final double _bigImageWidth = (_screenWidth * (2 / 3)) - 24;
+    final double _smallImageWidth = (_screenWidth * (1 / 3)) - 18;
+    final double _bigImageWidth = (_screenWidth * (2 / 3)) - 26;
 
     return Row(
       children: [

@@ -9,7 +9,7 @@ class SmallGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double _screenWidth = MediaQuery.of(context).size.width;
-    final double _smallImageWidth = (_screenWidth * (1 / 3)) - 16;
+    final double _smallImageWidth = (_screenWidth * (1 / 3)) - 18;
 
     return Row(
       children: [

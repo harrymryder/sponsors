@@ -34,7 +34,7 @@ ThemeData themeData = ThemeData(
     backgroundColor: Colors.white,
     titleTextStyle: GoogleFonts.workSans(
       color: Colors.grey.shade900,
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: FontWeight.w600,
     ),
     elevation: 1.5,

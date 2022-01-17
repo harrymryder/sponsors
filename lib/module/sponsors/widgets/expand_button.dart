@@ -31,6 +31,7 @@ class ExpandButton extends StatelessWidget {
           style: GoogleFonts.workSans(
             fontSize: 12,
             fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700,
           ),
         ),
       ),

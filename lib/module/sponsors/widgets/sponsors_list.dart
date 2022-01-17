@@ -60,9 +60,9 @@ class _SponsorsListState extends State<SponsorsList> {
               controller: _scrollController,
               itemCount: state.sponsors.length,
               padding: const EdgeInsets.only(
-                top: 8,
-                right: 8,
-                left: 8,
+                top: 10,
+                right: 10,
+                left: 10,
                 bottom: 40,
               ),
               itemBuilder: (context, index) => Column(
