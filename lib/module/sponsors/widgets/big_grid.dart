@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import './product_image.dart';
 
-class GridBig extends StatelessWidget {
-  const GridBig({
+class BigGrid extends StatelessWidget {
+  const BigGrid({
     required this.smallImages,
     required this.bigImage,
     required this.bigSide,

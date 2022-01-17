@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import './product_image.dart';
 
-class GridSixSmall extends StatelessWidget {
-  const GridSixSmall({required this.images, Key? key}) : super(key: key);
+class SmallGrid extends StatelessWidget {
+  const SmallGrid({required this.images, Key? key}) : super(key: key);
 
   final List images;
   @override

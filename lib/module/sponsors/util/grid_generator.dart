@@ -34,20 +34,21 @@ class GridGenerator {
     }
 
     if (_coverGridBigImage.isNotEmpty && _coverGridSmallImages.length == 2) {
-      _result['coverGrid'] = GridBig(
+      _result['coverGrid'] = BigGrid(
         smallImages: _coverGridSmallImages,
         bigImage: _coverGridBigImage[0],
         bigSide: 'right',
       );
     }
 
-    bool _noMoreGrids = false;
+    bool _noGridsLeft = false;
     List<Widget> _expandedGrids = [];
 
-    while (!_noMoreGrids) {
+    while (!_noGridsLeft) {
       int _smallCount = _leftoverSmallImages.length;
       int _bigCount = _leftoverBigImages.length;
 
+      /// Generate small grid 3x2
       if (_smallCount >= 6) {
         List _imagesToAdd = [];
 
@@ -58,12 +59,14 @@ class GridGenerator {
         }
 
         /// Create small image grid
-        _expandedGrids.add(GridSixSmall(images: _imagesToAdd));
+        _expandedGrids.add(SmallGrid(images: _imagesToAdd));
 
         /// Remove images
         for (var i = 0; i < 6; i++) {
           _leftoverSmallImages.removeAt(0);
         }
+
+        /// Generate big grid
       } else if (_smallCount >= 2 && _bigCount >= 1) {
         List<String> _sides = ['right', 'left'];
         final _random = Random();
@@ -81,7 +84,7 @@ class GridGenerator {
         }
 
         /// Create big image grid
-        _expandedGrids.add(GridBig(
+        _expandedGrids.add(BigGrid(
           smallImages: _imagesToAdd,
           bigImage: _bigImage,
           bigSide: _randomSide,
@@ -91,8 +94,10 @@ class GridGenerator {
         for (var i = 0; i < 2; i++) {
           _leftoverSmallImages.removeAt(0);
         }
+
+        /// No grids left
       } else {
-        _noMoreGrids = true;
+        _noGridsLeft = true;
       }
     }
 
