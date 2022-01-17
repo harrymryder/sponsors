@@ -106,6 +106,8 @@ class _SponsorsListState extends State<SponsorsList> {
   void _onScroll() {
     if (_isBottom && _loadMore) {
       context.read<SponsorsBloc>().add(SponsorsFetched());
+
+      /// Set a timer so function ^ isn't called multiple times
       _loadMore = false;
       Future.delayed(const Duration(seconds: 1)).then((_) => _loadMore = true);
     }
