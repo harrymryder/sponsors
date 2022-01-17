@@ -18,9 +18,11 @@ class BigGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _screenWidth = MediaQuery.of(context).size.width;
     final double _smallImageWidth = (_screenWidth * (1 / 3)) - 18;
-    final double _bigImageWidth = (_screenWidth * (2 / 3)) - 26;
+    final double _bigImageWidth = (_screenWidth * (2 / 3)) - 28;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (bigSide == 'left')
           ProductImage(

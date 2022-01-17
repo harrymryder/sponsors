@@ -18,10 +18,10 @@ class ProductImage extends StatelessWidget {
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         boxShadow: smallShadow,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(1),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(1),
         child: Image.network(
           src,
           width: width,

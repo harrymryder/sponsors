@@ -12,6 +12,8 @@ class SmallGrid extends StatelessWidget {
     final double _smallImageWidth = (_screenWidth * (1 / 3)) - 18;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Column(
           children: [

@@ -6,7 +6,7 @@ List<BoxShadow> get smallShadow {
       color: Colors.grey.shade300,
       blurRadius: 1,
       spreadRadius: 1,
-      offset: const Offset(0, 0),
+      offset: const Offset(0, 1),
     ),
   ];
 }
