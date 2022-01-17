@@ -30,15 +30,14 @@ class SponsorsBloc extends Bloc<SponsorsEvent, SponsorsState> {
           await SponsorsRepository(sponsorsAPI: SponsorsAPI())
               .getSponsors(currentPage);
 
-      /// If no more pages, set max reached
+      /// If no more pages, set max reached to true
       if (sponsors.isEmpty) {
         emit(state.copyWith(
           hasReachedMax: true,
           isFetching: false,
         ));
-
-        /// Else, add fetched sponsors to state
       } else {
+        /// Else, add fetched sponsors to state
         emit(state.copyWith(
           status: SponsorsStatus.success,
           currentPage: currentPage,

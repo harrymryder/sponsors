@@ -39,5 +39,6 @@ class SponsorsState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, currentPage, sponsors, isFetching];
+  List<Object> get props =>
+      [status, currentPage, sponsors, isFetching, hasReachedMax];
 }
